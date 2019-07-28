@@ -67,7 +67,7 @@ class ApiException(NassException):
 
     def __str__(self):
         """Return the error message."""
-        return 'Server returned error message \"%s\"' % self.message
+        return 'Server returned error message "%s"' % self.message
 
 
 class ExceptionList(NassException):
@@ -85,7 +85,7 @@ class ExceptionList(NassException):
 
     def __str__(self):
         """Return the comma-separated list of errors."""
-        return 'Server returned error messages %s' % ', '.join(self.errors)
+        return "Server returned error messages %s" % ", ".join(self.errors)
 
 
 class ExceedsRowLimit(ApiException):

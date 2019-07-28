@@ -33,11 +33,11 @@ class Query(object):
         """
         if op is None:
             self.params[param] = value
-        elif op in ('le', 'lt', 'ge', 'gt', 'like', 'not_like', 'ne'):
-            param_key = '{param}__{op}'.format(param=param, op=op.upper())
+        elif op in ("le", "lt", "ge", "gt", "like", "not_like", "ne"):
+            param_key = "{param}__{op}".format(param=param, op=op.upper())
             self.params[param_key] = value
         else:
-            raise TypeError('Invalid operator: %r' % op)
+            raise TypeError("Invalid operator: %r" % op)
         return self
 
     def count(self):

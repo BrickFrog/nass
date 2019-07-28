@@ -17,7 +17,7 @@ class NassApi(object):
       >>> api = NassApi('api key')
     """
 
-    BASE_URL = 'http://quickstats.nass.usda.gov/api'
+    BASE_URL = "http://quickstats.nass.usda.gov/api"
 
     def __init__(self, key):
         self.key = key
@@ -36,7 +36,7 @@ class NassApi(object):
         :return: The decoded value of field_name in the response
         """
         api_url = self.BASE_URL + url
-        params.update({'key': self.key})
+        params.update({"key": self.key})
 
         try:
             resp = self.http.get(api_url, params=params)
@@ -67,11 +67,11 @@ class NassApi(object):
         :return: The value of field_name in data
         """
         try:
-            errors = data['error']
+            errors = data["error"]
         except (KeyError, TypeError):
             pass
         else:
-            cls._raise_for_error_message(data['error'], response)
+            cls._raise_for_error_message(data["error"], response)
 
         if response.status_code != 200:
             raise exceptions.NassException(response)
@@ -98,17 +98,16 @@ class NassApi(object):
             elif len(errors) == 1:
                 message = errors[0]
                 error_classes = {
-                    'unauthorized': exceptions.Unauthorized,
-                    'bad request - invalid query': exceptions.InvalidQuery,
-                    'bad request - unsupported media type':
-                        exceptions.BadMediaType,
+                    "unauthorized": exceptions.Unauthorized,
+                    "bad request - invalid query": exceptions.InvalidQuery,
+                    "bad request - unsupported media type": exceptions.BadMediaType,
                 }
                 if message in error_classes:
                     exc_class = error_classes[message]
                     raise exc_class(message, response)
-                elif message.startswith('exceeds limit'):
+                elif message.startswith("exceeds limit"):
                     try:
-                        rows = int(message.split('=')[1])
+                        rows = int(message.split("=")[1])
                     except (IndexError, ValueError):
                         rows = None
                     raise exceptions.ExceedsRowLimit(rows, message, response)
@@ -129,7 +128,7 @@ class NassApi(object):
           >>> api.param_values('source_desc')
           >>> ['CENSUS', 'SURVEY']
         """
-        return self._api_request('/get_param_values/', {'param': param}, param)
+        return self._api_request("/get_param_values/", {"param": param}, param)
 
     def query(self):
         """Create a query used for filtering.
@@ -158,7 +157,7 @@ class NassApi(object):
         :return: The number of rows in the result
         :rtype: int
         """
-        count = self._api_request('/get_counts/', query.params, 'count')
+        count = self._api_request("/get_counts/", query.params, "count")
         return int(count)
 
     def call_query(self, query):
@@ -171,4 +170,4 @@ class NassApi(object):
         :return: The results of the query
         :rtype: list
         """
-        return self._api_request('/api_GET/', query.params, 'data')
+        return self._api_request("/api_GET/", query.params, "data")
